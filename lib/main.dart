@@ -1,5 +1,6 @@
 import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_authenticator/amplify_authenticator.dart';
 import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:budget_tracker/amplifyconfiguration.dart';
 import 'package:budget_tracker/models/BudgetEntry.dart';
@@ -16,20 +17,19 @@ Future<void> main() async {
 Future<void> _configureAmplify() async {
   try {
     // Create the API plugin
-    // If ModelProvider.instance is not available, try running 
+    // If ModelProvider.instance is not available, try running
     // `amplify codegen models` from the root of project
     final api = AmplifyAPI(modelProvider: ModelProvider.instance);
 
-    // Create the Auth plugin 
+    // Create the Auth plugin
     final auth = AmplifyAuthCognito();
 
-    // Add the plugins and configure Amplify for app 
+    // Add the plugins and configure Amplify for app
     await Amplify.addPlugins([api, auth]);
     await Amplify.configure(amplifyconfig);
 
     safePrint('Successfully configured amplify');
-  }
-  on Exception catch(e) {
+  } on Exception catch (e) {
     safePrint('Error configuring amplify: $e');
   }
 }
@@ -43,10 +43,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return Authenticator(
+        child: MaterialApp.router(
       routerConfig: _router,
       debugShowCheckedModeBanner: false,
-    );
+      builder: Authenticator.builder(),
+    ));
   }
 }
 
@@ -93,16 +95,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return totalAmount;
   }
 
-  Widget _buildRow({ 
-    required String title, 
-    required String description,
-    required String amount,
-    TextStyle? style
-  }) {
+  Widget _buildRow(
+      {required String title,
+      required String description,
+      required String amount,
+      TextStyle? style}) {
     return Row(
       children: [
         Expanded(child: Text(title, textAlign: TextAlign.center, style: style)),
-        Expanded(child: Text(description, textAlign: TextAlign.center, style: style)),
+        Expanded(
+            child:
+                Text(description, textAlign: TextAlign.center, style: style)),
         Expanded(child: Text(amount, textAlign: TextAlign.center, style: style))
       ],
     );
@@ -145,24 +148,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                 final budgetEntry = _budgetEntries[index];
                                 return Dismissible(
                                     key: ValueKey(budgetEntry),
-                                    background:
-                                        const ColoredBox(color: Colors.red,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(right: 10),
-                                      child: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Icon(Icons.delete,
-                                              color: Colors.white)),
-                                    )
-                                    ),
-                                    onDismissed: (_) => _deleteBudgetEntry(budgetEntry: budgetEntry),
+                                    background: const ColoredBox(
+                                        color: Colors.red,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(right: 10),
+                                          child: Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Icon(Icons.delete,
+                                                  color: Colors.white)),
+                                        )),
+                                    onDismissed: (_) => _deleteBudgetEntry(
+                                        budgetEntry: budgetEntry),
                                     child: ListTile(
-                                      onTap: () => _navigateToBudgetEntry(budgetEntry: budgetEntry),
-                                      title: _buildRow(title : budgetEntry.title,
-                                       description: budgetEntry.description ?? '',
-                                       amount: '\$ ${budgetEntry.amount.toStringAsFixed(2)}')
-                                       )
-                                );
+                                        onTap: () => _navigateToBudgetEntry(
+                                            budgetEntry: budgetEntry),
+                                        title: _buildRow(
+                                            title: budgetEntry.title,
+                                            description:
+                                                budgetEntry.description ?? '',
+                                            amount:
+                                                '\$ ${budgetEntry.amount.toStringAsFixed(2)}')));
                               }))
                     ])))));
   }
