@@ -4,3 +4,14 @@ flutter create budget_tracker
 Initialise amplify project:
 amplify init 
 
+// add an api using amplify
+amplify add api 
+
+// add auth 
+amplify add auth 
+
+# deploy (push) to AWS using amplify 
+amplify push -y
+
+// generate dart file models 
+amplify codegen models 

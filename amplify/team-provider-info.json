@@ -10,6 +10,14 @@
       "StackName": "amplify-budgettracker-dev-200116",
       "StackId": "arn:aws:cloudformation:ap-south-1:625643106743:stack/amplify-budgettracker-dev-200116/6d3ad2b0-87c6-11ee-a90f-02f68bbb3d0a",
       "AmplifyAppId": "d321m1i7wm2xo6"
+    },
+    "categories": {
+      "auth": {
+        "budgettracker55772031": {}
+      },
+      "api": {
+        "budgettracker": {}
+      }
     }
   }
 }
