@@ -15,3 +15,9 @@ amplify push -y
 
 // generate dart file models 
 amplify codegen models 
+
+// update authentication type for amplify api
+// under authorization mode, pick: Amazon Cognito User Pool 
+amplify api update
+amplify push -y
+
