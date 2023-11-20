@@ -97,7 +97,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
   Future<void> _deleteBudgetEntry({BudgetEntry? budgetEntry}) async {
-    // to be filled in
+    final request = ModelMutations.delete<BudgetEntry>(budgetEntry!);
+    final response = await Amplify.API.mutate(request: request).response;
+    safePrint('Delete response: $response');
+    await _refreshBudgetEntries();
   }
 
   Future<void> _navigateToBudgetEntry({BudgetEntry? budgetEntry}) async {
