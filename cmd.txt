@@ -1,0 +1,6 @@
+// create flutter project 
+flutter create budget_tracker 
+
+Initialise amplify project:
+amplify init 
+
